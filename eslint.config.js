@@ -1,6 +1,7 @@
 const js = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 
+/** @type {import('eslint').Linter.Config[]} */
 module.exports = [
   {
     ignores: [
