@@ -60,18 +60,15 @@ export class ComponentDocumentLinkProvider implements vscode.DocumentLinkProvide
         continue;
       }
 
+      // Match on identity, not version: templatePath is the repo layout (same across refs) and the link is pinned to
+      // parsed.version below. A version match would miss tag-pinned includes.
       const cached = cachedComponents.find(
         (c) =>
           c.gitlabInstance === parsed.gitlabInstance &&
           c.sourcePath === parsed.path &&
-          c.name === parsed.name &&
-          (!parsed.version || c.version === parsed.version)
+          c.name === parsed.name
       );
 
-      // Only produce a link when the cache has a resolved templatePath for the component. Uncached components are
-      // skipped: better no link than a misleading one. The catalog discovery populates templatePath for every entry
-      // in a configured componentSource, so the only time this misses is for components from projects the user
-      // hasn't configured (or before the first cache refresh completes).
       if (!cached?.templatePath) {
         continue;
       }
